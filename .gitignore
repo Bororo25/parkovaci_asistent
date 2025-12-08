@@ -1,0 +1,7 @@
+Debug/
+Release/
+*.launch
+*.log
+*.o
+*.d
+*.elf
