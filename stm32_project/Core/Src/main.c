@@ -78,6 +78,7 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
+  // boris je pi ehm dobry chalan
 
   /* USER CODE BEGIN SysInit */
 
