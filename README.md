@@ -22,3 +22,7 @@ Na meranie vzdialenosti je použitý ultrazvukový senzor HC-SR04. Funguje na pr
 
 ## Piny HC-SR04 senzora
 ![Piny HC-SR04 senzora](images/Ultrasonic-sensor-pinout.png)
+
+## Schéma zarpojenia periférií
+![Schéma zarpojenia periférií](images/circuit_image.png)
+
