@@ -26,3 +26,14 @@ Na meranie vzdialenosti je použitý ultrazvukový senzor HC-SR04. Funguje na pr
 ## Schéma zapojenia periférií
 ![Schéma zarpojenia periférií](images/circuit_image.png)
 
+**Členovia tímu:**
+
+Martin Brandobur  
+Boris Šupák  
+Ivan Vanca
+
+**Rozdelenie úloh:**
+
+Boris Šupák - Logika snímača a LCD displeja  
+Ivan Vanca - Komunikácia  
+Martin Brandobur - Poskytnutie informácií vodičovi o vzdialenosti vozidla od prekážky 
