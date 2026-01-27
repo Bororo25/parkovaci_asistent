@@ -8,6 +8,7 @@
 #ifndef INC_HCSR04_H_
 #define INC_HCSR04_H_
 
+#include "main.h"
 #include "stm32f3xx_hal.h"
 #include <stdint.h>
 
