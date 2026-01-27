@@ -10,7 +10,7 @@
 /* ---- Internal helper ---- */
 static void buzzer_set(uint8_t state)
 {
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, state ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, state ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
 /* ---- Public API ---- */
