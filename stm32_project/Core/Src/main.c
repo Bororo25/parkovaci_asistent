@@ -21,6 +21,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+
+#include "lcd1602.h"
+#include "hcsr04.h"
+#include "rgb_led.h"
+#include "buzzer.h"
 
 /* USER CODE END Includes */
 
@@ -91,34 +97,22 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-  // --- TEST LCD ---
-  LCD1602_Init();          // Inicializácia displeja
-  LCD1602_Clear();         // Vyčisti obrazovku
-  LCD1602_SetCursor(0, 0); // Kurzor na prvý riadok, prvý stĺpec
-  LCD1602_Print("Prvy Riadok"); // Vypíš text
-
-  LCD1602_SetCursor(1, 0); // Kurzor na prvý riadok, prvý stĺpec
-  LCD1602_Print("Druhy Riadok"); // Vypíš text
-
-  /* USER CODE BEGIN 2 */
-  // --- TEST BUZZER NA 10 SEKÚND ---
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  Buzzer_On();
-
+  LCD1602_Init();
   RGB_LED_Init();
-  RGB_LED_Red();    HAL_Delay(10000);
-  RGB_LED_Green();  HAL_Delay(10000);
-  RGB_LED_Blue();   HAL_Delay(10000);
-  RGB_LED_Yellow(); HAL_Delay(10000);
-  RGB_LED_Off();    HAL_Delay(10000);
+  Buzzer_Init();
+
+  HCSR04_Init(&htim3, TIM_CHANNEL_2);
+  HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_2);
+
+  LCD1602_Clear();
+  LCD1602_SetCursor(0, 0);
+  LCD1602_Print("Park. asistent");
+
+  LCD1602_SetCursor(1, 0);
+  LCD1602_Print("Init OK");
+  HAL_Delay(800);
+
+
 
   /* USER CODE END 2 */
 
@@ -277,6 +271,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+    HCSR04_OnCaptureIRQ(htim);
+}
 
 /* USER CODE END 4 */
 
