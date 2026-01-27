@@ -28,6 +28,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+
+#include "lcd1602.h"
+#include "hcsr04.h"
+#include "rgb_led.h"
+#include "buzzer.h"
 
 /* USER CODE END Includes */
 
