@@ -18,13 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "lcd1602.h"
-#include "rgb_led.h"
-#include "buzzer.h"
-#include "hcsr04.h"
-#include <stdio.h>
-#include "stm32f3xx_hal.h"
-
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
