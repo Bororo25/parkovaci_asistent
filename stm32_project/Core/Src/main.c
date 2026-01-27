@@ -216,13 +216,13 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LED_R_Pin|LED_G_Pin|LED_B_Pin|TRIG_Pin
-                          |LCD_D4_Pin|LCD_D5_Pin|LCD_RS_Pin, GPIO_PIN_RESET);
+                          |BUZZ_Pin|LCD_D4_Pin|LCD_D5_Pin|LCD_RS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LCD_E_Pin|LCD_D7_Pin|LCD_D6_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_R_Pin LED_G_Pin LED_B_Pin */
-  GPIO_InitStruct.Pin = LED_R_Pin|LED_G_Pin|LED_B_Pin;
+  /*Configure GPIO pins : LED_R_Pin LED_G_Pin LED_B_Pin BUZZ_Pin */
+  GPIO_InitStruct.Pin = LED_R_Pin|LED_G_Pin|LED_B_Pin|BUZZ_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
