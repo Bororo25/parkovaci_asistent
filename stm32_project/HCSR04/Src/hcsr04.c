@@ -16,6 +16,9 @@ static volatile uint32_t s_t_fall = 0;
 static volatile uint32_t s_pulse_us = 0;
 static volatile uint8_t  s_ready = 0;
 static volatile uint8_t  s_waiting_fall = 0;
+static uint32_t s_start_ms = 0;
+static volatile uint8_t s_timed_out = 0;
+
 
 static uint8_t s_dwt_inited = 0;
 
@@ -80,7 +83,13 @@ void HCSR04_Trigger(void)
 {
     s_ready = 0;
     s_waiting_fall = 0;
+    s_pulse_us = 0;
+    s_timed_out = 0;
+
     set_polarity_rising();
+
+    s_start_ms = HAL_GetTick();
+
 
     HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_RESET);
     delay_us(2);
@@ -109,6 +118,7 @@ float HCSR04_GetDistanceCm(void)
 void HCSR04_OnCaptureIRQ(TIM_HandleTypeDef *htim)
 {
     if (htim != s_htim) return;
+    if (s_timed_out) return;
 
     if (!s_waiting_fall)
     {
@@ -124,4 +134,19 @@ void HCSR04_OnCaptureIRQ(TIM_HandleTypeDef *htim)
 
         compute_pulse_us();
     }
+}
+
+uint8_t HCSR04_HasTimedOut(uint32_t timeout_ms)
+{
+    if (s_ready) return 0;
+
+    if (!s_timed_out && (HAL_GetTick() - s_start_ms) >= timeout_ms)
+    {
+        s_timed_out = 1;
+        s_pulse_us = 0;
+        s_waiting_fall = 0;
+        set_polarity_rising();
+    }
+
+    return s_timed_out;
 }
