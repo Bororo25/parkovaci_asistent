@@ -6,9 +6,9 @@
 
 - Ultrazvukový senzor vzdialenosti HC-SR04
 
-- Display LCD 16 x 2
+- Display LCD 1602A
 
-- Bzučiak VYS7940
+- Bzučiak TMB12A05
 
 - RGB LED
 
