@@ -18,6 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "lcd1602.h"
+#include "rgb_led.h"
+#include "buzzer.h"
+#include "hcsr04.h"
+#include <stdio.h>
+#include "stm32f3xx_hal.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -89,49 +96,72 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM3_Init();
-  /* USER CODE BEGIN 2 */
-
-  // --- TEST LCD ---
-  LCD1602_Init();          // Inicializácia displeja
-  LCD1602_Clear();         // Vyčisti obrazovku
-  LCD1602_SetCursor(0, 0); // Kurzor na prvý riadok, prvý stĺpec
-  LCD1602_Print("Prvy Riadok"); // Vypíš text
-
-  LCD1602_SetCursor(1, 0); // Kurzor na prvý riadok, prvý stĺpec
-  LCD1602_Print("Druhy Riadok"); // Vypíš text
-
-  /* USER CODE BEGIN 2 */
-  // --- TEST BUZZER NA 10 SEKÚND ---
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  Buzzer_On();
-
+  LCD1602_Init();
   RGB_LED_Init();
-  RGB_LED_Red();    HAL_Delay(10000);
-  RGB_LED_Green();  HAL_Delay(10000);
-  RGB_LED_Blue();   HAL_Delay(10000);
-  RGB_LED_Yellow(); HAL_Delay(10000);
-  RGB_LED_Off();    HAL_Delay(10000);
+  Buzzer_Init();
 
-  /* USER CODE END 2 */
+  HCSR04_Init(&htim3, TIM_CHANNEL_2);
+  HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_2);
 
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
+    /* USER CODE BEGIN WHILE */
+    while (1)
+    {
+      /* USER CODE END WHILE */
+  	  static uint32_t lastTrig = 0;
+  	  static uint32_t lastLcd  = 0;
 
-    /* USER CODE BEGIN 3 */
+  	  uint32_t now = HAL_GetTick();
+
+  	  // 1) trigger každých 60 ms
+  	  if (now - lastTrig >= 60)
+  	  {
+  	      HCSR04_Trigger();
+  	      lastTrig = now;
+  	  }
+
+  	  // 2) ak je meranie hotové -> spracuj
+  	  if (HCSR04_IsReady())
+  	  {
+  	      float d = HCSR04_GetDistanceCm();
+
+  	      // LED + buzzer (len demo prahy)
+  	      if (d < 10.0f) { RGB_LED_Red();    Buzzer_On(); LCD1602_SetCursor(1, 0); }
+  	      else if (d < 25.0f) { RGB_LED_Yellow(); Buzzer_Off();LCD1602_SetCursor(1, 0); }
+  	      else { RGB_LED_Green(); Buzzer_Off();LCD1602_SetCursor(1, 0); }
+
+  	      // LCD obnovuj pomalšie, nech nebliká
+  	      if (now - lastLcd >= 200)
+  	      {
+  	          char line0[17];
+  	          snprintf(line0, sizeof(line0), "Dist: %5.1fcm", d);
+
+  	          LCD1602_SetCursor(0, 0);
+  	          LCD1602_Print("                ");
+  	          LCD1602_SetCursor(0, 0);
+  	          LCD1602_Print(line0);
+
+  	          lastLcd = now;
+  	      }
+  	  }
+  	  else if (HCSR04_HasTimedOut(40))
+  	  {
+  	      RGB_LED_Blue();
+  	      Buzzer_Off();
+
+  	      if (now - lastLcd >= 200)
+  	      {
+  	          LCD1602_SetCursor(0, 0);
+  	          LCD1602_Print("No echo          ");
+  	          lastLcd = now;
+  	      }
+  	  }
+
+      /* USER CODE BEGIN 3 */
+    }
+    /* USER CODE END 3 */
   }
-  /* USER CODE END 3 */
-}
+
 
 /**
   * @brief System Clock Configuration
@@ -277,6 +307,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+
+{
+
+    HCSR04_OnCaptureIRQ(htim);
+
+}
 
 /* USER CODE END 4 */
 
