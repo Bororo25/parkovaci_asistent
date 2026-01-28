@@ -34,6 +34,6 @@ Ivan Vanca
 
 **Rozdelenie úloh:**
 
-Boris Šupák - Logika snímača a LCD displeja  
-Ivan Vanca - Komunikácia  
+Boris Šupák - IOC a logika LCD displeja  
+Ivan Vanca - Logika snímača a časovač  
 Martin Brandobur - Poskytnutie informácií vodičovi o vzdialenosti vozidla od prekážky 
