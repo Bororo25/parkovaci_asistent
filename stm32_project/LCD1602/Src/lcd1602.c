@@ -43,7 +43,7 @@ static void lcd_cmd(uint8_t cmd)
 {
 	lcd_send(cmd, 0);
 
-	if(cmd == 0x01 || cmd == 0x02)
+	if(cmd == 0x01 || cmd == 0x02) //clear, home
 	{
 		HAL_Delay(2);
 	}
@@ -73,11 +73,11 @@ void LCD1602_Init(void)
 	lcd_write4(0x03); HAL_Delay(1);
 	lcd_write4(0x02); HAL_Delay(1);
 
-	lcd_cmd(0x28);
+	lcd_cmd(0x28); //2 riadky, 4 bit, format znakov
 
-	lcd_cmd(0x0C);
+	lcd_cmd(0x0C); //display on
 
-	lcd_cmd(0x06);
+	lcd_cmd(0x06); //text zlava do prava
 
 	lcd_cmd(0x01);
 }
