@@ -28,12 +28,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdio.h>
-
-#include "lcd1602.h"
-#include "hcsr04.h"
-#include "rgb_led.h"
-#include "buzzer.h"
 
 /* USER CODE END Includes */
 
@@ -65,6 +59,42 @@ static void MX_GPIO_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 
+/* ================= PALIČKY NA LCD ================= */
+
+static void LCD_DrawBars(float d)
+
+{
+
+    uint8_t bars = 0;
+
+    if      (d < 10.0f) bars = 16;
+
+    else if (d < 15.0f) bars = 12;
+
+    else if (d < 20.0f) bars = 8;
+
+    else if (d < 25.0f) bars = 4;
+
+    else                bars = 0;
+
+
+    LCD1602_SetCursor(1, 0);
+
+    char line[17];
+
+    for (uint8_t i = 0; i < 16; i++)
+        {
+            if (i < bars)
+                LCD1602_WriteChar(0xFF);   // <<< PLNY BLOK
+            else
+                LCD1602_WriteChar(' ');
+        }
+
+    LCD1602_Print(line);
+
+}
+
+/* ================================================= */
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -146,6 +176,10 @@ int main(void)
   	          LCD1602_Print("                ");
   	          LCD1602_SetCursor(0, 0);
   	          LCD1602_Print(line0);
+
+  	        /* >>> PALIČKY <<< */
+
+			LCD_DrawBars(d);
 
   	          lastLcd = now;
   	      }
