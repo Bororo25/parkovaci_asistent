@@ -18,7 +18,15 @@ Cieľom projektu je návrh a realizácia parkovacieho asistenta, ktorý meria vz
 
 ## Meranie vzdialenosti
 
-Na meranie vzdialenosti je použitý ultrazvukový senzor HC-SR04. Funguje na princípe vysielania zvuku vpred, ktorý sa odráža od okolitých objektov. Senzor následne počúva návrat ozveny od objektu. Podľa toho koľko dlho trvalo ozvene prejsť od senzoru k objektu a naspäť, vieme vypočítať v akej vzdialenosti sa objekt nachádza. 
+Senzor HC-SR04 meria vzdialenosť na základe času letu ultrazvukovej vlny. Mikrokontrolér vyšle na pin TRIG krátky impulz v logickej 1 s dĺžkou minimálne 10 µs, čím sa spustí meranie. Senzor následne vyšle ultrazvukový signál smerom dopredu a čaká na jeho odraz od prekážky. Počas tohto merania je na pine ECHO generovaný impulz, ktorého dĺžka v stave HIGH predstavuje čas, za ktorý sa zvuková vlna dostala k prekážke a späť k senzoru. Vzdialenosť potom počítame ako:
+
+$$
+d = \frac{t \cdot v}{2}
+$$
+
+- d je vzdialenosť od prekážky,
+- t je dĺžka impulzu ECHO 
+- v je rýchlosť zvuku vo vzduchu
 
 ## Piny HC-SR04 senzora
 ![Piny HC-SR04 senzora](images/Ultrasonic-sensor-pinout.png)
