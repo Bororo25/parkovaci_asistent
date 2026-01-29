@@ -162,7 +162,7 @@ int main(void)
   	      if (now - lastLcd >= 200)
   	      {
   	          char line0[17];
-  	          snprintf(line0, sizeof(line0), "Dist: %5.1fcm", d);
+  	          snprintf(line0, sizeof(line0), "Dist: %3.1fcm", d);
 
   	          LCD1602_SetCursor(0, 0);
   	          LCD1602_Print(line0);
@@ -176,13 +176,6 @@ int main(void)
   	  {
   	      RGB_LED_Blue();
   	      Buzzer_Off();
-
-  	      if (now - lastLcd >= 200)
-  	      {
-  	          LCD1602_SetCursor(0, 0);
-  	          LCD1602_Print("No echo          ");
-  	          lastLcd = now;
-  	      }
   	  }
 
       /* USER CODE BEGIN 3 */

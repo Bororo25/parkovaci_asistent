@@ -38,7 +38,7 @@ void RGB_LED_Green(void)
 
 void RGB_LED_Blue(void)
 {
-    rgb_set(1, 0, 0);
+    rgb_set(0, 0, 1);
 }
 
 void RGB_LED_Yellow(void)
