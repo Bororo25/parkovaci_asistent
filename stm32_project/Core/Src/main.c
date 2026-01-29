@@ -165,10 +165,7 @@ int main(void)
   	          snprintf(line0, sizeof(line0), "Dist: %5.1fcm", d);
 
   	          LCD1602_SetCursor(0, 0);
-  	          LCD1602_Print("                ");
-  	          LCD1602_SetCursor(0, 0);
   	          LCD1602_Print(line0);
-
 
 			LCD_DrawBars(d);
 
@@ -277,7 +274,7 @@ static void MX_TIM3_Init(void)
   sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
   sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-  sConfigIC.ICFilter = 0;
+  sConfigIC.ICFilter = 4;
   if (HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
