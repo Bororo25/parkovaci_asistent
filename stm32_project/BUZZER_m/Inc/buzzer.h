@@ -15,9 +15,9 @@
 extern "C" {
 #endif
 
-void Buzzer_Init(void);   // Inicializácia GPIO
-void Buzzer_On(void);     // Zapni zvuk
-void Buzzer_Off(void);    // Vypni zvuk
+void Buzzer_Init(void);
+void Buzzer_On(void);
+void Buzzer_Off(void);
 
 #ifdef __cplusplus
 }

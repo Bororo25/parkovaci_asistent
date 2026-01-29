@@ -7,8 +7,6 @@
 
 #include "rgb_led.h"
 
-/* ---- Internal helper ---- */
-
 static void rgb_set(uint8_t r, uint8_t g, uint8_t b)
 {
     HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, r ? GPIO_PIN_RESET : GPIO_PIN_SET);
@@ -30,7 +28,7 @@ void RGB_LED_Off(void)
 
 void RGB_LED_Red(void)
 {
-    rgb_set(0, 0, 1);
+    rgb_set(1, 0, 0);
 }
 
 void RGB_LED_Green(void)
@@ -45,5 +43,5 @@ void RGB_LED_Blue(void)
 
 void RGB_LED_Yellow(void)
 {
-    rgb_set(0, 1, 1);
+    rgb_set(1, 1, 0);
 }

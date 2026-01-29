@@ -80,18 +80,14 @@ static void LCD_DrawBars(float d)
 
     LCD1602_SetCursor(1, 0);
 
-    char line[17];
 
     for (uint8_t i = 0; i < 16; i++)
         {
             if (i < bars)
-                LCD1602_WriteChar(0xFF);   // <<< PLNY BLOK
+                LCD1602_WriteChar(0xFF);
             else
                 LCD1602_WriteChar(' ');
         }
-
-    LCD1602_Print(line);
-
 }
 
 /* ================================================= */
@@ -149,24 +145,20 @@ int main(void)
 
   	  uint32_t now = HAL_GetTick();
 
-  	  // 1) trigger každých 60 ms
   	  if (now - lastTrig >= 60)
   	  {
   	      HCSR04_Trigger();
   	      lastTrig = now;
   	  }
 
-  	  // 2) ak je meranie hotové -> spracuj
   	  if (HCSR04_IsReady())
   	  {
   	      float d = HCSR04_GetDistanceCm();
 
-  	      // LED + buzzer (len demo prahy)
-  	      if (d < 10.0f) { RGB_LED_Red();    Buzzer_On(); LCD1602_SetCursor(1, 0); }
-  	      else if (d < 25.0f) { RGB_LED_Yellow(); Buzzer_Off();LCD1602_SetCursor(1, 0); }
-  	      else { RGB_LED_Green(); Buzzer_Off();LCD1602_SetCursor(1, 0); }
+  	      if (d < 10.0f) { RGB_LED_Red(); Buzzer_On();}
+  	      else if (d < 25.0f) { RGB_LED_Yellow(); Buzzer_Off();}
+  	      else { RGB_LED_Green(); Buzzer_Off();}
 
-  	      // LCD obnovuj pomalšie, nech nebliká
   	      if (now - lastLcd >= 200)
   	      {
   	          char line0[17];
@@ -177,7 +169,6 @@ int main(void)
   	          LCD1602_SetCursor(0, 0);
   	          LCD1602_Print(line0);
 
-  	        /* >>> PALIČKY <<< */
 
 			LCD_DrawBars(d);
 
